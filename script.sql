@@ -1,0 +1,41 @@
+DROP DATABASE IF EXISTS note_taking_DH;
+CREATE DATABASE note_taking_DH;
+USE note_taking_DH;
+
+CREATE OR REPLACE TABLE users (
+  id INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL,
+  surname VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL
+);
+
+CREATE OR REPLACE TABLE categories (
+  id INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL
+);
+
+CREATE OR REPLACE TABLE notes (
+  id INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  title VARCHAR(100) NOT NULL,
+  createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  ON UPDATE CURRENT_TIMESTAMP,
+  description TEXT,
+  AllowDelete TINYINT(1),
+  user_id INT(10) NOT NULL,
+  KEY fk_user_id (user_id),
+  CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (id)
+);
+
+CREATE OR REPLACE TABLE category_note (
+  id INT(10) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  category_id INT(10) NOT NULL,
+  note_id INT(10) NOT NULL,
+  KEY fk_category_id (category_id),
+  CONSTRAINT fk_category_id FOREIGN KEY (category_id) REFERENCES categories (id),
+  KEY fk_note_id (note_id),
+  CONSTRAINT fk_note_id FOREIGN KEY (note_id) REFERENCES notes (id)
+);
+
+
+-- INSERT 10 ENTRIES FOR EACH TABLE
